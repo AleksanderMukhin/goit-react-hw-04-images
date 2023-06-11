@@ -43,7 +43,7 @@ export const App = () => {
       .catch(error => {
         setError(error.message);
       });
-  }, [value, page]);
+  }, [value, page, totalHits]);
 
   const openModal = ({ currentTarget: { id } }) => {
     const imgModal = imgs.find(hit => hit.id === Number(id));
