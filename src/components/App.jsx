@@ -29,14 +29,14 @@ export const App = () => {
 
   useEffect(() => {
     setStateLoader(true);
-    // console.log(searchImg());
+    console.log(value);
     searchImg(value, page)
       .then(images => {
-        if (totalHits === 0) {
+        if (images.totalHits === 0) {
           setError('No images found!');
         }
         setImgs(prevState => [...prevState, ...images.hits]);
-        console.log(totalHits);
+        console.log(images.totalHits);
         setTotalHits(images.totalHits);
         setStateLoader(false);
       })
