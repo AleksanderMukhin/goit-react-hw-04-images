@@ -1,43 +1,58 @@
-import { Component } from 'react';
 import css from './Modal.module.css';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
-export class Modal extends Component {
-  state = {};
+export const Modal = ({ modalImg, closeModal }) => {
+  useEffect(() => {
+    const onClickOverlay = ({ target: { id } }) => {
+      if (id === 'overlay') {
+        closeModal();
+      }
+    };
+    const checkKeyEsc = ({ code }) => {
+      if (code === 'Escape') {
+        closeModal();
+      }
+    };
+    window.addEventListener('keydown', checkKeyEsc);
+    window.addEventListener('click', onClickOverlay);
+    return () => {
+      window.removeEventListener('keydown', checkKeyEsc);
+      window.removeEventListener('click', onClickOverlay);
+    };
+  }, [closeModal]);
+  // componentDidMount() {
+  //   window.addEventListener('keydown', checkKeyEsc);
+  //   window.addEventListener('click', onClickOverlay);
+  // }
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.checkKeyEsc);
-    window.addEventListener('click', this.onClickOverlay);
-  }
+  // componentWillUnmount() {
+  //   window.removeEventListener('keydown', checkKeyEsc);
+  //   window.removeEventListener('click', onClickOverlay);
+  // }
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.checkKeyEsc);
-    window.removeEventListener('click', this.onClickOverlay);
-  }
+  // const checkKeyEsc = ({ code }) => {
+  //   if (code === 'Escape') {
+  //     closeModal();
+  //   }
+  // };
 
-  checkKeyEsc = ({ code }) => {
-    if (code === 'Escape') {
-      this.props.closeModal();
-    }
-  };
+  // const onClickOverlay = ({ target: { id } }) => {
+  //   if (id === 'overlay') {
+  //     closeModal();
+  //   }
+  // };
 
-  onClickOverlay = ({ target: { id } }) => {
-    if (id === 'overlay') {
-      this.props.closeModal();
-    }
-  };
+  const { tags, largeImageURL } = modalImg;
 
-  render() {
-    const { tags, largeImageURL } = this.props.modalImg;
-    return (
-      <div className={css.overlay} id="overlay">
-        <div className={css.modal}>
-          <img src={largeImageURL} alt={tags} />
-        </div>
+  return (
+    <div className={css.overlay} id="overlay">
+      <div className={css.modal}>
+        <img src={largeImageURL} alt={tags} />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 Modal.propTypes = {
   modalImg: PropTypes.object.isRequired,

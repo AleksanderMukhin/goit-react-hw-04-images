@@ -23,6 +23,7 @@ export const App = () => {
     if (!value) {
       return;
     }
+
     setStateLoader(true);
     searchImg(value, page)
       .then(images => {
