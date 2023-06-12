@@ -2,7 +2,7 @@ import { useState } from 'react';
 import css from './Searchbar.module.css';
 import PropTypes from 'prop-types';
 
-export const Searchbar = ({ resetState, changeValue }) => {
+export const Searchbar = ({ changeValue }) => {
   const [input, setInput] = useState('');
 
   const handleChange = ({ target: { value } }) => {
@@ -15,7 +15,6 @@ export const Searchbar = ({ resetState, changeValue }) => {
       alert('Enter data to search!');
       return;
     }
-    // await resetState();
     changeValue(input);
     setInput('');
   };
@@ -43,6 +42,5 @@ export const Searchbar = ({ resetState, changeValue }) => {
 };
 
 Searchbar.propTypes = {
-  // getImages: PropTypes.func.isRequired,
-  resetState: PropTypes.func.isRequired,
+  changeValue: PropTypes.func.isRequired,
 };

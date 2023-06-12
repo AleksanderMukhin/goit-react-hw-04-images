@@ -19,31 +19,24 @@ export const App = () => {
   const [modalImg, setModalImg] = useState('');
   const [error, setError] = useState('');
 
-  const resetState = () => {
-    setImgs([]);
-    setTotalHits(0);
-    setPage(1);
-    setValue('');
-    setError(null);
-  };
-
   useEffect(() => {
+    if (!value) {
+      return;
+    }
     setStateLoader(true);
-    console.log(value);
     searchImg(value, page)
       .then(images => {
         if (images.totalHits === 0) {
           setError('No images found!');
         }
         setImgs(prevState => [...prevState, ...images.hits]);
-        console.log(images.totalHits);
         setTotalHits(images.totalHits);
         setStateLoader(false);
       })
       .catch(error => {
         setError(error.message);
       });
-  }, [value, page, totalHits]);
+  }, [value, page]);
 
   const openModal = ({ currentTarget: { id } }) => {
     const imgModal = imgs.find(hit => hit.id === Number(id));
@@ -56,9 +49,11 @@ export const App = () => {
   };
 
   const changeValue = inputValue => {
-    console.log(inputValue);
     setValue(inputValue);
     setPage(1);
+    setImgs([]);
+    setTotalHits(0);
+    setError(null);
   };
 
   const loadMoreBtn = () => {
@@ -67,7 +62,7 @@ export const App = () => {
 
   return (
     <div className={css.app}>
-      <Searchbar changeValue={changeValue} resetState={resetState}></Searchbar>
+      <Searchbar changeValue={changeValue}></Searchbar>
 
       {error ? (
         <h2>{error}</h2>
